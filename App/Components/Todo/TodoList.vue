@@ -14,6 +14,7 @@
 					:key="todo.id"
 					:todo="todo"
 					@remove="removeTodo"
+					@modify="modifyTodo"
 				/>
 			</div>
 			<div v-else class="ui message info">
@@ -63,6 +64,18 @@ export default {
 					});
 			} else 
 				this.isCreating = false;
+		},
+		modifyTodo (todo, todoText) {
+			this.$set(todo, 'isUpdating', true);
+			TodoService
+				.update(todo, todoText)
+				.then((data) => {
+					this.$set(todo, 'isUpdating', null);
+					var index = this.todos.findIndex(todo => {
+						return todo.id === data.id
+					});
+					this.$set(this.todos, index, data);
+				});
 		},
 		removeTodo (todoToRemove) {
 			this.$set(todoToRemove, 'isUpdating', true);

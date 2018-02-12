@@ -54,5 +54,13 @@ namespace MarczakIO.VueSPA.Web.Azure
              await client.DeleteDocumentAsync(
                  UriFactory.CreateDocumentUri(dbOptions.DatabaseId, CollectionId, id));
         }
+
+        public async Task<T> UpdateItemAsync(string CollectionId, string id, T item)
+        {
+            Document document = await client.ReplaceDocumentAsync(
+                UriFactory.CreateDocumentUri(dbOptions.DatabaseId, CollectionId, id), item);
+            
+            return (T)(dynamic)document;
+        }
     }
 }
