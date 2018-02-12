@@ -1,14 +1,16 @@
 <template>
 	<div id="home">
-		<h1>Hello World!</h1>
-        <router-link to="todo">Todo List</router-link>
-        <router-link to="forecast">Forecast List</router-link>
-		<router-view></router-view> 
+		<h1>To-do List SPA</h1>
+		<TodoList/>
 	</div>
 </template>
 
 <script>
-export default { }
+import TodoList from './Components/Todo/TodoList.vue'
+
+export default {
+	components: { TodoList }
+}
 </script>
 
 <style lang="scss">

@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
-import TodoList from './components/Todo/TodoList.vue'
-import ForecastList from './components/ForecastList/ForecastList.vue'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
@@ -10,17 +8,7 @@ Vue.use(VueRouter)
 const routes = [
   { 
     path: '/', 
-    component: App,
-    children: [
-        {
-          path: 'todo',
-          component: TodoList
-        },
-        {
-          path: 'forecast',
-          component: ForecastList
-        }
-      ]
+    component: App
   }
 ]
 
