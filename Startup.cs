@@ -9,20 +9,31 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using MarczakIO.VueSPA.Web.Models;
+using MarczakIO.VueSPA.Web.Azure;
 
 namespace MarczakIO.VueSPA.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.local.json", optional: true)
+                .AddEnvironmentVariables();
+            
+            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<DatabaseSettings>(options => 
+                Configuration.GetSection("DatabaseSettings").Bind(options));
+            services.AddSingleton(typeof(DocumentDBRepository<>), typeof(DocumentDBRepository<>));
             services.AddMvc();
         }
 

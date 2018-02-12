@@ -1,27 +1,32 @@
 <template>
 	<div>
-		<BaseInputText 
-			v-model="newTodoText"
-			placeholder="New todo item"
-			@keydown.enter="addTodo"
-		/>
-		<ul v-if="todos.length">
-			<TodoListItem
-				v-for="todo in todos"
-				:key="todo.id"
-				:todo="todo"
-				@remove="removeTodo"
-			/>
-		</ul>
-		<p v-else>
-			Nothing left in the list. Add a new todo in the input above.
-		</p>
+		<div v-if="!isFetching">
+			<div class="ui animated relaxed list" v-if="todos.length">
+				<TodoListItem 
+					class="item"
+					v-for="todo in todos"
+					:key="todo.id"
+					:todo="todo"
+					@remove="removeTodo"
+				/>
+			</div>
+			<div v-else class="ui message info">
+				<i class="ui icon info"></i>
+				There are no todo items. Add a new todo in the input above.
+			</div>
+		</div>
+		<div v-else class="ui clean segment empty-loader">
+			<div class="ui active inverted dimmer">
+				<div class="ui loader"></div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 import BaseInputText from './BaseInputText.vue'
 import TodoListItem from './TodoListItem.vue'
+import TodoService from '../../Services/TodoService.js'
 
 let nextTodoId = 1
 
@@ -32,38 +37,39 @@ export default {
 	data () {
 		return {
 			newTodoText: '',
-			todos: [
-                {
-                    id: nextTodoId++,
-                    text: 'Learn Vue'
-                },
-                {
-                    id: nextTodoId++,
-                    text: 'Learn about single-file components'
-                },
-                {
-                    id: nextTodoId++,
-                    text: 'Fall in love'
-                }
-            ]
+			todos: [],
+			isFetching: true
 		}
 	},
 	methods: {
 		addTodo () {
-			const trimmedText = this.newTodoText.trim()
-			if (trimmedText) {
-				this.todos.push({
-					id: nextTodoId++,
-					text: trimmedText
-				})
-				this.newTodoText = ''
-			}
+			
 		},
-		removeTodo (idToRemove) {
-			this.todos = this.todos.filter(todo => {
-				return todo.id !== idToRemove
-			})
-		}
+		removeTodo (todoToRemove) {
+			
+		},
+		getTodos() {
+            this.isFetching = true
+            TodoService
+                .getAll()
+                .then((data) => {
+                    this.todos = data;
+                    this.isFetching = false
+                });
+        }
+	},
+	created () {
+		this.getTodos();
 	}
 }
 </script>
+
+<style lang="scss">
+.clean.segment {
+  border: 0px;
+  box-shadow: none;
+}
+.empty-loader {
+	min-height: 100px;
+}
+</style>
