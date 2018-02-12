@@ -1,6 +1,6 @@
 <template>
   <div class="item ui clean segment">
-    <div class="ui dimmer" v-bind:class="{ active: todo.isUpdating }">
+    <div class="ui inverted dimmer" v-bind:class="{ active: todo.isUpdating }">
       <div class="ui loader"></div>
     </div>
     <div class="right floated content">

@@ -20,5 +20,15 @@ export default {
         }).then(function (response) {
             return response;
         });
+    },
+    delete: (item) => {
+        var data = JSON.stringify(item);
+        return fetch('/api/Todo/Delete', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: data
+        }).then(function (response) {
+            return response;
+        });
     }
 }

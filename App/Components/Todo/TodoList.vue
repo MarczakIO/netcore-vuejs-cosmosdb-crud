@@ -65,7 +65,15 @@ export default {
 				this.isCreating = false;
 		},
 		removeTodo (todoToRemove) {
-			
+			this.$set(todoToRemove, 'isUpdating', true);
+			TodoService
+				.delete(todoToRemove)
+				.then((data) => {
+					this.todos = this.todos.filter(todo => {
+						return todo.id !== todoToRemove.id
+					})
+					this.$set(todoToRemove, 'isUpdating', null);
+				});
 		},
 		getTodos() {
             this.isFetching = true

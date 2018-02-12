@@ -31,6 +31,12 @@ namespace MarczakIO.VueSPA.Web.Controllers
             return await todoRepo.CreateItemAsync(CollectionId, todo);
         }
 
+        [HttpPost("[action]")]
+        public async Task Delete([FromBody] Todo todo)
+        {
+            await todoRepo.DeleteItemAsync(CollectionId, todo.Id);
+        }
+
         public class Todo
         {
             [JsonProperty("id")]
