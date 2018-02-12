@@ -1,6 +1,12 @@
 <template>
 	<div>
 		<div v-if="!isFetching">
+			<BaseInputText 
+				v-model="newTodoText"
+				placeholder="New todo item"
+				@keydown.enter="addTodo"
+				:isCreating="isCreating"
+			/>
 			<div class="ui animated relaxed list" v-if="todos.length">
 				<TodoListItem 
 					class="item"
@@ -38,12 +44,25 @@ export default {
 		return {
 			newTodoText: '',
 			todos: [],
-			isFetching: true
+			isFetching: true,
+			isCreating: false
 		}
 	},
 	methods: {
 		addTodo () {
-			
+			this.isCreating = true
+			var todoname = this.newTodoText.trim();
+			if (todoname) {
+				var todo = {"name": todoname}
+				TodoService
+					.create(todo)
+					.then((data) => {
+						this.todos.push(data);
+						this.isCreating = false
+						this.newTodoText = '';
+					});
+			} else 
+				this.isCreating = false;
 		},
 		removeTodo (todoToRemove) {
 			

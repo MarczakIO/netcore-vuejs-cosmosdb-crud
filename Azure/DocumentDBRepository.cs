@@ -39,5 +39,14 @@ namespace MarczakIO.VueSPA.Web.Azure
 
             return results;
         }
+
+        public async Task<T> CreateItemAsync(string CollectionId, T item)
+        {
+            Document document = await client.CreateDocumentAsync(
+                UriFactory.CreateDocumentCollectionUri(dbOptions.DatabaseId, CollectionId), 
+                item);
+
+            return (T)(dynamic)document;
+        }
     }
 }

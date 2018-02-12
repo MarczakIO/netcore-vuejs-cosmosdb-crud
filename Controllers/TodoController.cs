@@ -25,6 +25,12 @@ namespace MarczakIO.VueSPA.Web.Controllers
             return await todoRepo.GetItemsAsync(CollectionId, e => true);
         }
 
+        [HttpPost("[action]")]
+        public async Task<Todo> Create([FromBody] Todo todo)
+        {
+            return await todoRepo.CreateItemAsync(CollectionId, todo);
+        }
+
         public class Todo
         {
             [JsonProperty("id")]

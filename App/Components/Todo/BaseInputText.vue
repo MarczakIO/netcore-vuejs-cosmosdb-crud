@@ -1,10 +1,17 @@
 <template>
-  <input
-    type="text"
-    class="input"
-    :value="value"
-    v-on="listeners"
-  >
+  <div>
+    <h2>Create new todo item</h2>
+    <div class="ui vertical segment">
+      <div class="ui inverted dimmer" v-bind:class="{ active: isCreating }">
+        <div class="ui loader"></div>
+      </div>
+      <input
+        type="text"
+        class="input"
+        :value="value"
+        v-on="listeners"/>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -13,6 +20,10 @@ export default {
     value: {
       type: String,
       default: '',
+    },
+    isCreating: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
